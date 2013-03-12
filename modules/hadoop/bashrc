@@ -1,0 +1,9 @@
+export HADOOP_HOME=/opt/hadoop-0.23.6
+export JAVA_HOME=/usr/lib/jvm/java-1.6.0-openjdk-i386
+
+unalias fs &> /dev/null
+alias fs="hadoop fs"
+unalias hls &> /dev/null
+alias hls="fs -ls"
+
+export PATH+=:$HADOOP_HOME/bin

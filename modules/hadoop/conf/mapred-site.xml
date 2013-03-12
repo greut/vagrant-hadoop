@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<configuration>
+    <property>
+        <name>mapred.job.tracker</name>
+        <value>localhost:9001</value>
+    </property>
+</configuration>

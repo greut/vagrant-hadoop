@@ -1,0 +1,4 @@
+Simple Vagrant config using a mix of the following resources:
+
+* http://cscarioni.blogspot.ch/2012/09/setting-up-hadoop-virtual-cluster-with.html
+* http://www.michael-noll.com/tutorials/running-hadoop-on-ubuntu-linux-single-node-cluster/
