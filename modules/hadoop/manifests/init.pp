@@ -1,26 +1,43 @@
 class hadoop {
   $hadoop_home = "/opt/hadoop"
+  $hadoop_ver = "0.20.2"
 
   exec { "download_hadoop":
-    command => "wget -O /tmp/hadoop.tgz http://mirror.switch.ch/mirror/apache/dist/hadoop/common/hadoop-0.23.6/hadoop-0.23.6.tar.gz",
+    command => "wget -O /tmp/hadoop.tgz http://archive.apache.org/dist/hadoop/core/hadoop-${hadoop_ver}/hadoop-${hadoop_ver}.tar.gz",
     path => $path,
-    unless => "ls /opt | grep hadoop-0.23.6",
-    require => Package["openjdk-6-jdk"]
+    unless => "ls /opt | grep hadoop-${hadoop_ver}",
+    require => Package["openjdk-7-jdk"]
   }
 
   exec { "unpack_hadoop":
     command => "tar -xzf /tmp/hadoop.tgz -C /opt",
     path => $path,
-    creates => "${hadoop_home}-0.23.6",
+    creates => "${hadoop_home}-${hadoop_ver}",
     require => Exec["download_hadoop"]
   }
 
-  file { "${hadoop_home}-0.23.6/conf":
-    ensure => directory,
-    before => File["${hadoop_home}-0.23.6/conf/hadoop-env.sh"],
+  exec { "symlink_hadoop":
+    command => "mkdir -p /opt/hadoop_install; ln -s ${hadoop_home}-${hadoop_ver} /opt/hadoop_install/hadoop",
+    path => $path,
+    creates => "/opt/hadoop_install/hadoop",
+    require => Exec["unpack_hadoop"]
   }
 
-  file { "${hadoop_home}-0.23.6/conf/hadoop-env.sh":
+  exec { "logs":
+    command => "mkdir -p ${hadoop_home}-${hadoop_ver}/logs; chmod 0777 ${hadoop_home}-${hadoop_ver}/logs",
+    path => $path,
+    creates => "/opt/hadoop_install/hadoop/logs",
+    require => Exec["unpack_hadoop"]
+  }
+
+  exec { "tmp":
+    command => "mkdir -p ${hadoop_home}-${hadoop_ver}/tmp; chmod 0777 ${hadoop_home}-${hadoop_ver}/tmp",
+    path => $path,
+    creates => "/opt/hadoop_install/hadoop/tmp",
+    require => Exec["unpack_hadoop"]
+  }
+
+  file { "${hadoop_home}-${hadoop_ver}/conf/hadoop-env.sh":
     source => "puppet:///files/modules/hadoop/conf/hadoop-env.sh",
     mode => 644,
     owner => root,
@@ -28,7 +45,7 @@ class hadoop {
     require => Exec["unpack_hadoop"],
   }
 
-  file { "${hadoop_home}-0.23.6/conf/core-site.xml":
+  file { "${hadoop_home}-${hadoop_ver}/conf/core-site.xml":
     source => "puppet:///files/modules/hadoop/conf/core-site.xml",
     mode => 644,
     owner => root,
@@ -36,7 +53,7 @@ class hadoop {
     require => Exec["unpack_hadoop"],
   }
 
-  file { "${hadoop_home}-0.23.6/conf/hdfs-site.xml":
+  file { "${hadoop_home}-${hadoop_ver}/conf/hdfs-site.xml":
     source => "puppet:///files/modules/hadoop/conf/hdfs-site.xml",
     mode => 644,
     owner => root,
@@ -44,7 +61,7 @@ class hadoop {
     require => Exec["unpack_hadoop"],
   }
 
-  file { "${hadoop_home}-0.23.6/conf/mapred-site.xml":
+  file { "${hadoop_home}-${hadoop_ver}/conf/mapred-site.xml":
     source => "puppet:///files/modules/hadoop/conf/mapred-site.xml",
     mode => 644,
     owner => root,

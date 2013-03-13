@@ -1,5 +1,5 @@
 # -*- mode: ruby -*-
-# vi: set ft=ruby :
+# vi: set ft=ruby nowrap sw=2 sts=2 ts=8 noet:
 
 Vagrant::Config.run do |config|
   # All Vagrant configuration is done here. The most common configuration

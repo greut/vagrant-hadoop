@@ -9,7 +9,7 @@ exec { "apt-get update":
   command => "apt-get update",
 }
 
-package { "openjdk-6-jdk":
+package { "openjdk-7-jdk":
   ensure => present,
   require => Exec["apt-get update"],
 }

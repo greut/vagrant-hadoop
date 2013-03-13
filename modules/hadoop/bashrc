@@ -1,5 +1,5 @@
-export HADOOP_HOME=/opt/hadoop-0.23.6
-export JAVA_HOME=/usr/lib/jvm/java-1.6.0-openjdk-i386
+export HADOOP_HOME=/opt/hadoop_install/hadoop
+export JAVA_HOME=/usr/lib/jvm/java-1.7.0-openjdk-i386
 
 unalias fs &> /dev/null
 alias fs="hadoop fs"
