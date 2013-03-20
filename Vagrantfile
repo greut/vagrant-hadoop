@@ -38,6 +38,7 @@ Vagrant::Config.run do |config|
   # config.vm.share_folder "v-data", "/vagrant_data", "../data"
   config.vm.share_folder "shared", "/home/vagrant/shared", "shared"
   config.vm.share_folder "puppet", "/etc/puppet/files/modules", "modules"
+  config.vm.share_folder "project", "/home/vagrant/project", "../adb-project0"
 
   # Enable provisioning with Puppet stand alone.  Puppet manifests
   # are contained in a directory path relative to this Vagrantfile.

@@ -1,3 +1,6 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby nowrap sw=2 sts=2 ts=8 noet:
+
 class hadoop {
   $hadoop_home = "/opt/hadoop"
   $hadoop_ver = "0.20.2"
@@ -42,7 +45,7 @@ class hadoop {
     mode => 644,
     owner => root,
     group => root,
-    require => Exec["unpack_hadoop"],
+    require => Exec["unpack_hadoop"]
   }
 
   file { "${hadoop_home}-${hadoop_ver}/conf/core-site.xml":
@@ -50,7 +53,7 @@ class hadoop {
     mode => 644,
     owner => root,
     group => root,
-    require => Exec["unpack_hadoop"],
+    require => File["${hadoop_home}-${hadoop_ver}/conf/hadoop-env.sh"]
   }
 
   file { "${hadoop_home}-${hadoop_ver}/conf/hdfs-site.xml":
@@ -58,7 +61,7 @@ class hadoop {
     mode => 644,
     owner => root,
     group => root,
-    require => Exec["unpack_hadoop"],
+    require => File["${hadoop_home}-${hadoop_ver}/conf/core-site.xml"]
   }
 
   file { "${hadoop_home}-${hadoop_ver}/conf/mapred-site.xml":
@@ -66,6 +69,12 @@ class hadoop {
     mode => 644,
     owner => root,
     group => root,
-    require => Exec["unpack_hadoop"],
+    require => File["${hadoop_home}-${hadoop_ver}/conf/hdfs-site.xml"]
+  }
+
+  exec { "format":
+    command => "${hadoop_home}-${hadoop_ver}/bin/hadoop namenode -format",
+    path => $path,
+    require => File["${hadoop_home}-${hadoop_ver}/conf/mapred-site.xml"]
   }
 }
