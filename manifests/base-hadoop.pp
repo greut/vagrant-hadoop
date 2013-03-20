@@ -16,6 +16,16 @@ package { "openjdk-7-jdk":
   require => Exec["apt-get update"],
 }
 
+package { "git":
+  ensure => present,
+  require => Exec["apt-get update"],
+}
+
+package { "ant":
+  ensure => present,
+  require => Exec["apt-get update"],
+}
+
 file { "/etc/sysctl.conf":
   source => "puppet:///files/modules/hadoop/etc/sysctl.conf",
   mode => 0644,
