@@ -4,12 +4,21 @@
 class hadoop {
   $hadoop_home = "/opt/hadoop"
   $hadoop_ver = "0.20.2"
+  $pig_home = "/opt/pig"
+  $pig_ver = "0.9.2"
 
   exec { "download_hadoop":
     command => "wget -O /tmp/hadoop.tgz http://archive.apache.org/dist/hadoop/core/hadoop-${hadoop_ver}/hadoop-${hadoop_ver}.tar.gz",
     path => $path,
     unless => "ls /opt | grep hadoop-${hadoop_ver}",
     require => Package["openjdk-7-jdk"]
+  }
+
+  exec { "download_pig":
+    command => "wget -O /tmp/pig.tgz http://mirror.switch.ch/mirror/apache/dist/pig/pig-0.9.2/pig-0.9.2.tar.gz",
+    path => $path,
+    unless => "ls /opt | grep pig-${pig_ver}",
+    require => Exec["unpack_hadoop"]
   }
 
   exec { "unpack_hadoop":
@@ -19,11 +28,25 @@ class hadoop {
     require => Exec["download_hadoop"]
   }
 
+  exec { "unpack_pig":
+    command => "tar -xzf /tmp/pig.tgz -C /opt",
+    path => $path,
+    creates => "${pig_home}-${pig_ver}",
+    require => Exec["download_pig"]
+  }
+
   exec { "symlink_hadoop":
     command => "mkdir -p /opt/hadoop_install; ln -s ${hadoop_home}-${hadoop_ver} /opt/hadoop_install/hadoop",
     path => $path,
     creates => "/opt/hadoop_install/hadoop",
     require => Exec["unpack_hadoop"]
+  }
+  
+  exec { "symlink_pig":
+    command => "mkdir -p /opt/pig_install; ln -s ${pig_home}-${pig_ver} /opt/pig_install/pig",
+    path => $path,
+    creates => "/opt/pig_install/pig",
+    require => Exec["unpack_pig"]
   }
 
   exec { "logs":

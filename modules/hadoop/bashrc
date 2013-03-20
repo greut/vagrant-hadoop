@@ -1,4 +1,5 @@
 export HADOOP_HOME=/opt/hadoop_install/hadoop
+export PIG_HOME=/opt/pig_install/pig
 export JAVA_HOME=/usr/lib/jvm/java-1.7.0-openjdk-i386
 
 unalias fs &> /dev/null
@@ -6,4 +7,4 @@ alias fs="hadoop fs"
 unalias hls &> /dev/null
 alias hls="fs -ls"
 
-export PATH+=:$HADOOP_HOME/bin
+export PATH+=:$HADOOP_HOME/bin:$PIG_HOME/bin
