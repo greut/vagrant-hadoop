@@ -12,3 +12,5 @@ As simple as follow:
     # to end it
     $ stop-all.sh
     $ exit
+
+**NB:** it uses Hadoop 0.21.0 (which is old) and is not supported, so don't bother creating any pull requests. Thanks!
